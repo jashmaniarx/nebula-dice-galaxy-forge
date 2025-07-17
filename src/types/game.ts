@@ -1,4 +1,4 @@
-export type PlanetRarity = 'common' | 'uncommon' | 'rare' | 'mythic' | 'celestial';
+export type PlanetRarity = 'common' | 'uncommon' | 'rare' | 'epic' | 'mythic' | 'legendary' | 'celestial' | 'transcendent' | 'cosmic' | 'omniversal';
 
 export interface Planet {
   id: string;
@@ -17,7 +17,7 @@ export interface Planet {
 export interface Upgrade {
   id: string;
   name: string;
-  type: 'probability' | 'animation' | 'visual' | 'luck' | 'aesthetic' | 'reroll' | 'modifier';
+  type: 'probability' | 'animation' | 'visual' | 'luck' | 'aesthetic' | 'reroll' | 'modifier' | 'automation';
   effect: string;
   description: string;
   flavorText: string;

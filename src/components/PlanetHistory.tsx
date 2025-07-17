@@ -18,7 +18,7 @@ const PlanetHistory = ({ planets, onPlanetClick }: PlanetHistoryProps) => {
   return (
     <div className="glass-panel p-6">
       <h3 className="text-lg font-semibold mb-4 text-foreground">Recent Discoveries</h3>
-      <div className="space-y-2 max-h-64 overflow-y-auto">
+      <div className="space-y-2 max-h-64 overflow-y-auto custom-scrollbar">
         {planets.slice(0, 10).map((planet) => (
           <div
             key={planet.id}

@@ -20,6 +20,8 @@ const Index = () => {
 
   const hasEchoAnalyzer = gameState.upgrades.find(u => u.id === 'echo-analyzer')?.owned || false;
   const hasChronoCapsule = gameState.upgrades.find(u => u.id === 'chrono-capsule')?.owned || false;
+  const hasAutoDiscovery = gameState.upgrades.find(u => u.id === 'auto-discovery')?.owned || false;
+  const canAutoRoll = gameState.rollCount >= 100 && hasAutoDiscovery;
 
   return (
     <div className="min-h-screen relative">
@@ -85,6 +87,20 @@ const Index = () => {
               </div>
               
               <RollButton onRoll={rollPlanet} />
+              
+              {/* Auto-roll Toggle */}
+              {canAutoRoll && (
+                <div className="glass-panel p-4 mt-4">
+                  <h3 className="text-sm font-semibold mb-2 text-accent">Auto-Discovery Available</h3>
+                  <p className="text-xs text-muted-foreground mb-3">Automatically roll every 3 seconds</p>
+                  <button
+                    className="glass-button px-4 py-2 text-sm bg-accent/20 hover:bg-accent/30 text-accent"
+                    onClick={() => {/* Auto-roll logic will be added */}}
+                  >
+                    Enable Auto-Roll
+                  </button>
+                </div>
+              )}
               
               {/* Reroll Button */}
               {hasChronoCapsule && gameState.dailyRerolls > 0 && gameState.currentPlanet && (

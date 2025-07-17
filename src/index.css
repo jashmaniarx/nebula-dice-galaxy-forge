@@ -165,24 +165,24 @@ All colors MUST be HSL.
 /* Glassmorphism Components */
 @layer components {
   .glass-panel {
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
-    box-shadow: var(--glass-shadow);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    background: hsla(240, 35%, 5%, 0.85);
+    border: 1px solid hsla(0, 0%, 100%, 0.15);
+    box-shadow: 0 8px 32px hsla(0, 0%, 0%, 0.5);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
     border-radius: var(--radius);
   }
 
   .glass-button {
     @apply glass-panel transition-all duration-300;
-    background: linear-gradient(135deg, var(--glass-bg), var(--glass-bg));
-    border: 1px solid var(--glass-border);
+    background: hsla(240, 35%, 5%, 0.7);
+    border: 1px solid hsla(0, 0%, 100%, 0.2);
     cursor: pointer;
   }
 
   .glass-button:hover {
-    background: linear-gradient(135deg, hsla(0, 0%, 100%, 0.1), hsla(0, 0%, 100%, 0.05));
-    box-shadow: var(--glass-shadow), var(--glow-primary);
+    background: hsla(240, 35%, 5%, 0.9);
+    box-shadow: 0 8px 32px hsla(0, 0%, 0%, 0.6), var(--glow-primary);
   }
 
   .cosmic-glow {
@@ -214,8 +214,8 @@ All colors MUST be HSL.
 
   .upgrade-chip {
     @apply glass-panel px-3 py-2 text-sm transition-all duration-300;
-    background: linear-gradient(135deg, var(--glass-bg), var(--glass-bg));
-    border: 1px solid var(--glass-border);
+    background: hsla(240, 35%, 5%, 0.8);
+    border: 1px solid hsla(0, 0%, 100%, 0.15);
     cursor: pointer;
   }
 
@@ -227,7 +227,8 @@ All colors MUST be HSL.
 
   .chance-meter {
     @apply glass-panel p-3;
-    background: linear-gradient(135deg, var(--glass-bg), hsla(0, 0%, 100%, 0.02));
+    background: hsla(240, 35%, 5%, 0.9);
+    border: 1px solid hsla(0, 0%, 100%, 0.2);
   }
 
   .roll-button {
@@ -267,6 +268,37 @@ All colors MUST be HSL.
   .rarity-common { color: hsl(0, 0%, 65%); }
   .rarity-uncommon { color: hsl(120, 60%, 50%); }
   .rarity-rare { color: hsl(240, 80%, 60%); }
+  .rarity-epic { color: hsl(280, 70%, 55%); }
   .rarity-mythic { color: hsl(291, 64%, 42%); }
+  .rarity-legendary { color: hsl(45, 100%, 55%); }
   .rarity-celestial { color: hsl(54, 100%, 62%); text-shadow: var(--glow-accent); }
+  .rarity-transcendent { color: hsl(300, 100%, 70%); text-shadow: 0 0 20px hsl(300, 100%, 70%); }
+  .rarity-cosmic { color: hsl(200, 100%, 70%); text-shadow: 0 0 25px hsl(200, 100%, 70%); }
+  .rarity-omniversal { color: hsl(270, 100%, 80%); text-shadow: 0 0 30px hsl(270, 100%, 80%); }
+
+  /* Custom Scrollbar */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: hsla(0, 0%, 100%, 0.05);
+    border-radius: 4px;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: hsla(291, 64%, 42%, 0.6);
+    border-radius: 4px;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: hsla(291, 64%, 42%, 0.8);
+  }
+
+  /* Modal Backdrop */
+  .modal-backdrop {
+    background: hsla(0, 0%, 0%, 0.8);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
 }

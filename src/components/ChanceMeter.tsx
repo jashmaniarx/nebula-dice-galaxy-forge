@@ -8,16 +8,26 @@ const rarityLabels = {
   common: 'Common',
   uncommon: 'Uncommon',
   rare: 'Rare',
+  epic: 'Epic',
   mythic: 'Mythic',
-  celestial: 'Celestial'
+  legendary: 'Legendary',
+  celestial: 'Celestial',
+  transcendent: 'Transcendent',
+  cosmic: 'Cosmic',
+  omniversal: 'Omniversal'
 };
 
 const rarityColors = {
   common: 'text-gray-400',
   uncommon: 'text-green-400',
   rare: 'text-blue-400',
-  mythic: 'text-purple-400',
-  celestial: 'text-yellow-400'
+  epic: 'text-purple-400',
+  mythic: 'text-pink-400',
+  legendary: 'text-yellow-400',
+  celestial: 'text-amber-400',
+  transcendent: 'text-fuchsia-400',
+  cosmic: 'text-cyan-400',
+  omniversal: 'text-violet-400'
 };
 
 const ChanceMeter = ({ probabilities }: ChanceMeterProps) => {

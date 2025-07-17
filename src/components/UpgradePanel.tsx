@@ -16,7 +16,8 @@ const upgradeIcons = {
   luck: Dice1,
   aesthetic: Palette,
   reroll: RefreshCw,
-  modifier: TrendingUp
+  modifier: TrendingUp,
+  automation: Lock
 };
 
 const UpgradePanel = ({ isOpen, onClose, upgrades, onPurchase, rollCount }: UpgradePanelProps) => {
@@ -25,16 +26,16 @@ const UpgradePanel = ({ isOpen, onClose, upgrades, onPurchase, rollCount }: Upgr
   const canAfford = (upgrade: Upgrade) => rollCount >= upgrade.cost;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-      <div className="glass-panel relative w-full max-w-2xl mx-4 p-6 max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-center justify-center modal-backdrop">
+      <div className="glass-panel relative w-full max-w-2xl mx-4 p-6 max-h-[90vh] overflow-y-auto custom-scrollbar">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-2xl font-bold text-foreground">Cosmic Upgrades</h2>
           <button
             onClick={onClose}
-            className="p-2 rounded-full glass-button hover:bg-destructive/20 transition-colors"
+            className="w-8 h-8 rounded-full bg-destructive/80 hover:bg-destructive text-white transition-colors flex items-center justify-center"
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4" />
           </button>
         </div>
 

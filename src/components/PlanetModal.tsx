@@ -14,12 +14,12 @@ const PlanetModal = ({ planet, isOpen, onClose, hasEchoAnalyzer = false }: Plane
   const rarityClass = `rarity-${planet.rarity}`;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 flex items-center justify-center modal-backdrop">
       <div className="glass-panel relative w-full max-w-md mx-4 p-6 animate-scale-in">
-        {/* Close Button */}
+        {/* Close Button - Centered at top */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 p-2 rounded-full glass-button hover:bg-destructive/20 transition-colors"
+          className="absolute -top-4 left-1/2 transform -translate-x-1/2 w-8 h-8 rounded-full bg-destructive/80 hover:bg-destructive text-white transition-colors flex items-center justify-center z-10"
         >
           <X className="w-4 h-4" />
         </button>
