@@ -2,41 +2,70 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+/* Planetfall: Nebula Dice - Cosmic Design System
 All colors MUST be HSL.
 */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Cosmic Background */
+    --background: 240 35% 5%; /* Deep Navy #0D0D1A */
+    --foreground: 0 0% 88%; /* Light Gray #E0E0E0 */
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    /* Nebula Fade */
+    --card: 220 25% 14%; /* Nebula Fade #1B2331 */
+    --card-foreground: 0 0% 88%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    /* Glass Panels */
+    --popover: 0 0% 100% / 0.12; /* Translucent white */
+    --popover-foreground: 0 0% 88%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Starlight Purple Accent */
+    --primary: 291 64% 42%; /* #9C27B0 */
+    --primary-foreground: 0 0% 88%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Nova Cyan Secondary */
+    --secondary: 188 100% 42%; /* #00BCD4 */
+    --secondary-foreground: 0 0% 88%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* Muted Glass */
+    --muted: 0 0% 100% / 0.05;
+    --muted-foreground: 0 0% 65%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Legendary Glow */
+    --accent: 54 100% 62%; /* #FFEB3B */
+    --accent-foreground: 240 35% 5%;
 
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 88%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 0 0% 100% / 0.1;
+    --input: 0 0% 100% / 0.08;
+    --ring: 291 64% 42%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
+
+    /* Cosmic Gradients */
+    --gradient-nebula: linear-gradient(135deg, hsl(240 35% 5%), hsl(220 25% 14%));
+    --gradient-cosmic: linear-gradient(135deg, hsl(291 64% 42%), hsl(188 100% 42%));
+    --gradient-starlight: linear-gradient(135deg, hsl(291 64% 42%), hsl(291 64% 52%));
+    --gradient-nova: linear-gradient(135deg, hsl(188 100% 42%), hsl(188 100% 52%));
+    
+    /* Glass Effects */
+    --glass-bg: hsla(0, 0%, 100%, 0.05);
+    --glass-border: hsla(0, 0%, 100%, 0.1);
+    --glass-shadow: 0 8px 32px hsla(0, 0%, 0%, 0.37);
+    
+    /* Glow Effects */
+    --glow-primary: 0 0 20px hsl(291 64% 42% / 0.5);
+    --glow-secondary: 0 0 20px hsl(188 100% 42% / 0.5);
+    --glow-accent: 0 0 20px hsl(54 100% 62% / 0.5);
+    
+    /* Animations */
+    --transition-cosmic: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    --animation-float: float 6s ease-in-out infinite;
+    --animation-pulse-glow: pulse-glow 2s ease-in-out infinite alternate;
+    --animation-orbit: orbit 8s linear infinite;
 
     --sidebar-background: 0 0% 98%;
 
@@ -101,5 +130,143 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+    background: var(--gradient-nebula);
+    overflow-x: hidden;
   }
+}
+
+/* Cosmic Animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes pulse-glow {
+  0% { box-shadow: var(--glow-primary); }
+  100% { box-shadow: var(--glow-primary), var(--glow-primary); }
+}
+
+@keyframes orbit {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes stardust {
+  0% { opacity: 0; transform: translateY(50px) scale(0); }
+  50% { opacity: 1; transform: translateY(0) scale(1); }
+  100% { opacity: 0; transform: translateY(-50px) scale(0); }
+}
+
+/* Glassmorphism Components */
+@layer components {
+  .glass-panel {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: var(--radius);
+  }
+
+  .glass-button {
+    @apply glass-panel transition-all duration-300;
+    background: linear-gradient(135deg, var(--glass-bg), var(--glass-bg));
+    border: 1px solid var(--glass-border);
+    cursor: pointer;
+  }
+
+  .glass-button:hover {
+    background: linear-gradient(135deg, hsla(0, 0%, 100%, 0.1), hsla(0, 0%, 100%, 0.05));
+    box-shadow: var(--glass-shadow), var(--glow-primary);
+  }
+
+  .cosmic-glow {
+    box-shadow: var(--glow-primary);
+    animation: pulse-glow 2s ease-in-out infinite alternate;
+  }
+
+  .starfield {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background: radial-gradient(circle at 20% 50%, hsl(291 64% 42% / 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, hsl(188 100% 42% / 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, hsl(54 100% 62% / 0.05) 0%, transparent 50%);
+  }
+
+  .planet-card {
+    @apply glass-panel p-4 transition-all duration-300;
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .planet-card:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: var(--glass-shadow), var(--glow-secondary);
+  }
+
+  .upgrade-chip {
+    @apply glass-panel px-3 py-2 text-sm transition-all duration-300;
+    background: linear-gradient(135deg, var(--glass-bg), var(--glass-bg));
+    border: 1px solid var(--glass-border);
+    cursor: pointer;
+  }
+
+  .upgrade-chip:hover {
+    background: var(--gradient-cosmic);
+    box-shadow: var(--glow-accent);
+    transform: translateY(-2px);
+  }
+
+  .chance-meter {
+    @apply glass-panel p-3;
+    background: linear-gradient(135deg, var(--glass-bg), hsla(0, 0%, 100%, 0.02));
+  }
+
+  .roll-button {
+    @apply glass-button relative overflow-hidden;
+    background: var(--gradient-starlight);
+    border: 2px solid var(--glass-border);
+    box-shadow: var(--glow-primary);
+    transition: var(--transition-cosmic);
+  }
+
+  .roll-button:hover {
+    background: var(--gradient-cosmic);
+    box-shadow: var(--glow-primary), var(--glow-secondary);
+    transform: scale(1.05);
+  }
+
+  .roll-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, transparent, hsla(0, 0%, 100%, 0.1), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.6s;
+  }
+
+  .roll-button:hover::before {
+    transform: translateX(100%);
+  }
+
+  .orbit-ring {
+    animation: orbit 8s linear infinite;
+  }
+
+  .rarity-common { color: hsl(0, 0%, 65%); }
+  .rarity-uncommon { color: hsl(120, 60%, 50%); }
+  .rarity-rare { color: hsl(240, 80%, 60%); }
+  .rarity-mythic { color: hsl(291, 64%, 42%); }
+  .rarity-celestial { color: hsl(54, 100%, 62%); text-shadow: var(--glow-accent); }
 }
