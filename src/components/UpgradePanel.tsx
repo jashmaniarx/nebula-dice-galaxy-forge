@@ -1,5 +1,7 @@
+import { useState } from 'react';
 import { X, Zap, Eye, Palette, Dice1, RefreshCw, TrendingUp, Lock } from 'lucide-react';
 import { Upgrade } from '../types/game';
+import UpgradeTooltip from './UpgradeTooltip';
 
 interface UpgradePanelProps {
   isOpen: boolean;
@@ -21,6 +23,9 @@ const upgradeIcons = {
 };
 
 const UpgradePanel = ({ isOpen, onClose, upgrades, onPurchase, rollCount }: UpgradePanelProps) => {
+  const [hoveredUpgrade, setHoveredUpgrade] = useState<Upgrade | null>(null);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  
   if (!isOpen) return null;
 
   const canAfford = (upgrade: Upgrade) => rollCount >= upgrade.cost;
@@ -84,6 +89,14 @@ const UpgradePanel = ({ isOpen, onClose, upgrades, onPurchase, rollCount }: Upgr
                   <button
                     onClick={() => onPurchase(upgrade.id)}
                     disabled={!affordable}
+                    onMouseEnter={(e) => {
+                      setHoveredUpgrade(upgrade);
+                      setMousePosition({ x: e.clientX, y: e.clientY });
+                    }}
+                    onMouseLeave={() => setHoveredUpgrade(null)}
+                    onMouseMove={(e) => {
+                      setMousePosition({ x: e.clientX, y: e.clientY });
+                    }}
                     className={`w-full mt-3 py-2 px-4 rounded-lg font-medium transition-all ${
                       affordable
                         ? 'bg-primary/20 text-primary hover:bg-primary/30 border border-primary/30'
@@ -120,6 +133,13 @@ const UpgradePanel = ({ isOpen, onClose, upgrades, onPurchase, rollCount }: Upgr
           Upgrades are permanent and stack with each other
         </div>
       </div>
+      
+      {/* Upgrade Tooltip */}
+      <UpgradeTooltip
+        upgrade={hoveredUpgrade!}
+        show={!!hoveredUpgrade}
+        position={mousePosition}
+      />
     </div>
   );
 };

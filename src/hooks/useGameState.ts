@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { GameState, Planet, Upgrade, PlanetRarity, PlanetGenerationData } from '../types/game';
 
 const planetData: PlanetGenerationData = {
@@ -415,20 +415,43 @@ const baseProbabilities = {
 };
 
 export const useGameState = () => {
-  const [gameState, setGameState] = useState<GameState>({
-    planets: [],
-    upgrades: initialUpgrades,
-    rollCount: 0,
-    dailyRerolls: 1, // Start with 1 daily reroll
-    baseProbabilities,
-    modifiedProbabilities: { ...baseProbabilities },
-    currentPlanet: null,
-    showPlanetModal: false,
-    showUpgradePanel: false
+  const [gameState, setGameState] = useState<GameState>(() => {
+    // Try to load from localStorage
+    const saved = localStorage.getItem('planetfall-game-state');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        return {
+          ...parsed,
+          upgrades: initialUpgrades.map(upgrade => ({
+            ...upgrade,
+            owned: parsed.upgrades?.find((u: Upgrade) => u.id === upgrade.id)?.owned || false
+          }))
+        };
+      } catch (e) {
+        console.error('Failed to parse saved game state:', e);
+      }
+    }
+    return {
+      planets: [],
+      upgrades: initialUpgrades,
+      rollCount: 0,
+      dailyRerolls: 1,
+      baseProbabilities,
+      modifiedProbabilities: { ...baseProbabilities },
+      currentPlanet: null,
+      showPlanetModal: false,
+      showUpgradePanel: false
+    };
   });
 
   const [autoRollEnabled, setAutoRollEnabled] = useState(false);
   const [autoRollInterval, setAutoRollInterval] = useState<NodeJS.Timeout | null>(null);
+
+  // Save to localStorage whenever game state changes
+  useEffect(() => {
+    localStorage.setItem('planetfall-game-state', JSON.stringify(gameState));
+  }, [gameState]);
 
   const generatePlanet = useCallback((forceRarity?: PlanetRarity): Planet => {
     const probabilities = gameState.modifiedProbabilities;

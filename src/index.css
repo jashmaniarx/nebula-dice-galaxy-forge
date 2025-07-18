@@ -297,8 +297,30 @@ All colors MUST be HSL.
 
   /* Modal Backdrop */
   .modal-backdrop {
-    background: hsla(0, 0%, 0%, 0.8);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    background: hsla(0, 0%, 0%, 0.9);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  /* Shooting Star Animation */
+  @keyframes shooting-star {
+    0% {
+      transform: translateX(-100px) translateY(0) rotate(45deg);
+      opacity: 0;
+    }
+    20% {
+      opacity: 1;
+    }
+    80% {
+      opacity: 1;
+    }
+    100% {
+      transform: translateX(100vw) translateY(50px) rotate(45deg);
+      opacity: 0;
+    }
+  }
+
+  .shooting-star {
+    animation: shooting-star 3s linear infinite;
   }
 }

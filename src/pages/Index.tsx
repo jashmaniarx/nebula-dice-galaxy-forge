@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { Settings, History, Sparkles } from 'lucide-react';
 import { useGameState } from '../hooks/useGameState';
 import Starfield from '../components/Starfield';
@@ -6,6 +7,8 @@ import ChanceMeter from '../components/ChanceMeter';
 import PlanetModal from '../components/PlanetModal';
 import UpgradePanel from '../components/UpgradePanel';
 import PlanetHistory from '../components/PlanetHistory';
+import CollapsibleStats from '../components/CollapsibleStats';
+import SaveToast from '../components/SaveToast';
 
 const Index = () => {
   const {
@@ -18,10 +21,41 @@ const Index = () => {
     showPlanetDetails
   } = useGameState();
 
+  const [showSaveToast, setShowSaveToast] = useState(false);
+  const [saveMessage, setSaveMessage] = useState('');
+
   const hasEchoAnalyzer = gameState.upgrades.find(u => u.id === 'echo-analyzer')?.owned || false;
   const hasChronoCapsule = gameState.upgrades.find(u => u.id === 'chrono-capsule')?.owned || false;
   const hasAutoDiscovery = gameState.upgrades.find(u => u.id === 'auto-discovery')?.owned || false;
   const canAutoRoll = gameState.rollCount >= 100 && hasAutoDiscovery;
+
+  // Get the best planet (highest rarity)
+  const bestPlanet = gameState.planets.length > 0 ? gameState.planets.reduce((best, planet) => {
+    const rarityOrder = ['common', 'uncommon', 'rare', 'epic', 'mythic', 'legendary', 'celestial', 'transcendent', 'cosmic', 'omniversal'];
+    const bestIndex = rarityOrder.indexOf(best.rarity);
+    const planetIndex = rarityOrder.indexOf(planet.rarity);
+    return planetIndex > bestIndex ? planet : best;
+  }, gameState.planets[0]) : null;
+
+  // Show save toast when game state changes
+  useEffect(() => {
+    if (gameState.rollCount > 0) {
+      setSaveMessage('✨ Progress Saved');
+      setShowSaveToast(true);
+    }
+  }, [gameState.rollCount, gameState.upgrades]);
+
+  const handleRoll = () => {
+    rollPlanet();
+    setSaveMessage('🪐 New Planet Discovered');
+    setShowSaveToast(true);
+  };
+
+  const handlePurchaseUpgrade = (upgradeId: string) => {
+    purchaseUpgrade(upgradeId);
+    setSaveMessage('⚡ Upgrade Activated');
+    setShowSaveToast(true);
+  };
 
   return (
     <div className="min-h-screen relative">
@@ -51,26 +85,13 @@ const Index = () => {
           <div className="lg:w-80 space-y-6">
             <ChanceMeter probabilities={gameState.modifiedProbabilities} />
             
-            {/* Stats */}
-            <div className="glass-panel p-4">
-              <h3 className="font-semibold mb-3 text-foreground">Discovery Stats</h3>
-              <div className="space-y-2 text-sm">
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Total Rolls:</span>
-                  <span className="text-foreground font-medium">{gameState.rollCount}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Planets Found:</span>
-                  <span className="text-foreground font-medium">{gameState.planets.length}</span>
-                </div>
-                {hasChronoCapsule && (
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Rerolls Left:</span>
-                    <span className="text-accent font-medium">{gameState.dailyRerolls}</span>
-                  </div>
-                )}
-              </div>
-            </div>
+            {/* Collapsible Stats */}
+            <CollapsibleStats
+              rollCount={gameState.rollCount}
+              planetCount={gameState.planets.length}
+              dailyRerolls={gameState.dailyRerolls}
+              hasChronoCapsule={hasChronoCapsule}
+            />
           </div>
 
           {/* Center - Roll Button */}
@@ -86,7 +107,7 @@ const Index = () => {
                 </p>
               </div>
               
-              <RollButton onRoll={rollPlanet} />
+              <RollButton onRoll={handleRoll} equippedPlanet={bestPlanet} />
               
               {/* Auto-roll Toggle */}
               {canAutoRoll && (
@@ -142,8 +163,15 @@ const Index = () => {
         isOpen={gameState.showUpgradePanel}
         onClose={toggleUpgradePanel}
         upgrades={gameState.upgrades}
-        onPurchase={purchaseUpgrade}
+        onPurchase={handlePurchaseUpgrade}
         rollCount={gameState.rollCount}
+      />
+
+      {/* Save Toast */}
+      <SaveToast
+        show={showSaveToast}
+        message={saveMessage}
+        onHide={() => setShowSaveToast(false)}
       />
     </div>
   );
