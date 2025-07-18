@@ -18,7 +18,9 @@ const Index = () => {
     toggleUpgradePanel,
     purchaseUpgrade,
     useReroll,
-    showPlanetDetails
+    showPlanetDetails,
+    autoRollEnabled,
+    toggleAutoRoll
   } = useGameState();
 
   const [showSaveToast, setShowSaveToast] = useState(false);
@@ -113,12 +115,18 @@ const Index = () => {
               {canAutoRoll && (
                 <div className="glass-panel p-4 mt-4">
                   <h3 className="text-sm font-semibold mb-2 text-accent">Auto-Discovery Available</h3>
-                  <p className="text-xs text-muted-foreground mb-3">Automatically roll every 3 seconds</p>
+                  <p className="text-xs text-muted-foreground mb-3">
+                    {autoRollEnabled ? 'Rolling automatically every 3 seconds' : 'Automatically roll every 3 seconds'}
+                  </p>
                   <button
-                    className="glass-button px-4 py-2 text-sm bg-accent/20 hover:bg-accent/30 text-accent"
-                    onClick={() => {/* Auto-roll logic will be added */}}
+                    className={`glass-button px-4 py-2 text-sm transition-all ${
+                      autoRollEnabled 
+                        ? 'bg-destructive/20 hover:bg-destructive/30 text-destructive' 
+                        : 'bg-accent/20 hover:bg-accent/30 text-accent'
+                    }`}
+                    onClick={toggleAutoRoll}
                   >
-                    Enable Auto-Roll
+                    {autoRollEnabled ? 'Disable Auto-Roll' : 'Enable Auto-Roll'}
                   </button>
                 </div>
               )}

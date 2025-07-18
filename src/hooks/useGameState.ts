@@ -661,6 +661,31 @@ export const useGameState = () => {
     }));
   }, []);
 
+  const toggleAutoRoll = useCallback(() => {
+    if (autoRollEnabled) {
+      setAutoRollEnabled(false);
+      if (autoRollInterval) {
+        clearInterval(autoRollInterval);
+        setAutoRollInterval(null);
+      }
+    } else {
+      setAutoRollEnabled(true);
+      const interval = setInterval(() => {
+        rollPlanet();
+      }, 3000);
+      setAutoRollInterval(interval);
+    }
+  }, [autoRollEnabled, autoRollInterval, rollPlanet]);
+
+  // Clean up interval on unmount
+  useEffect(() => {
+    return () => {
+      if (autoRollInterval) {
+        clearInterval(autoRollInterval);
+      }
+    };
+  }, [autoRollInterval]);
+
   return {
     gameState,
     rollPlanet,
@@ -668,6 +693,8 @@ export const useGameState = () => {
     toggleUpgradePanel,
     purchaseUpgrade,
     useReroll,
-    showPlanetDetails
+    showPlanetDetails,
+    autoRollEnabled,
+    toggleAutoRoll
   };
 };

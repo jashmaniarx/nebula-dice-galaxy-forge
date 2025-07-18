@@ -1,6 +1,7 @@
 import { Planet } from '../types/game';
 import { motion } from 'framer-motion';
 import ParticleAura from './ParticleAura';
+import PlanetMutations from './PlanetMutations';
 
 interface EquippedPlanetDisplayProps {
   planet: Planet | null;
@@ -20,7 +21,7 @@ const EquippedPlanetDisplay = ({ planet }: EquippedPlanetDisplayProps) => {
           width: '200px',
           height: '200px',
           left: '50%',
-          top: '50%',
+          top: '35%', // Moved up from 50% to 35%
           transform: 'translate(-50%, -50%)',
         }}
       >
@@ -29,7 +30,7 @@ const EquippedPlanetDisplay = ({ planet }: EquippedPlanetDisplayProps) => {
 
       {/* Planet */}
       <motion.div
-        className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2"
+        className="absolute left-1/2 top-[35%] transform -translate-x-1/2 -translate-y-1/2" // Moved up to match orbital ring
         animate={{ 
           rotate: 360,
           y: [0, -5, 0],
@@ -68,6 +69,9 @@ const EquippedPlanetDisplay = ({ planet }: EquippedPlanetDisplayProps) => {
             transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
           />
         </div>
+
+        {/* Planet Mutations */}
+        <PlanetMutations rarity={planet.rarity} planetColor={planet.color} />
 
         {/* Particle Aura */}
         <ParticleAura rarity={planet.rarity} />
