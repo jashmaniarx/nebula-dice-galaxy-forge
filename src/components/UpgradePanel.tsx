@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { X, Zap, Eye, Palette, Dice1, RefreshCw, TrendingUp, Lock } from 'lucide-react';
 import { Upgrade } from '../types/game';
 import UpgradeTooltip from './UpgradeTooltip';

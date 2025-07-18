@@ -423,6 +423,10 @@ export const useGameState = () => {
         const parsed = JSON.parse(saved);
         return {
           ...parsed,
+          planets: parsed.planets?.map((planet: any) => ({
+            ...planet,
+            discoveredAt: new Date(planet.discoveredAt)
+          })) || [],
           upgrades: initialUpgrades.map(upgrade => ({
             ...upgrade,
             owned: parsed.upgrades?.find((u: Upgrade) => u.id === upgrade.id)?.owned || false

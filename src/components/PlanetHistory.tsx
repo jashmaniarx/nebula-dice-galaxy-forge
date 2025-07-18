@@ -42,7 +42,7 @@ const PlanetHistory = ({ planets, onPlanetClick }: PlanetHistoryProps) => {
               </div>
             </div>
             <div className="text-xs text-muted-foreground">
-              {planet.discoveredAt.toLocaleDateString()}
+              {new Date(planet.discoveredAt).toLocaleDateString()}
             </div>
           </div>
         ))}
