@@ -82,12 +82,6 @@ const Index = () => {
           </button>
         </header>
 
-        {/* Equipped Planet Display - Top Position */}
-        {bestPlanet && (
-          <div className="flex justify-center pt-4 pb-2">
-            <EquippedPlanetDisplay planet={bestPlanet} />
-          </div>
-        )}
 
         {/* Main Game Area */}
         <div className="flex-1 flex flex-col lg:flex-row gap-6 p-6">
@@ -106,7 +100,14 @@ const Index = () => {
 
           {/* Center - Roll Button */}
           <div className="flex-1 flex items-center justify-center">
-            <div className="text-center space-y-8">
+            <div className="text-center space-y-8 relative">
+              {/* Equipped Planet Display - Above title, slightly to the right */}
+              {bestPlanet && (
+                <div className="absolute -top-32 left-1/2 transform translate-x-8 -translate-y-1/2 z-10">
+                  <EquippedPlanetDisplay planet={bestPlanet} />
+                </div>
+              )}
+              
               <div className="space-y-4">
                 <h2 className="text-3xl font-bold text-foreground">
                   Discover New Worlds
