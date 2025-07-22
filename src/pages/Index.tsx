@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Settings, History, Sparkles } from 'lucide-react';
+import { Settings, History } from 'lucide-react';
 import { useGameState } from '../hooks/useGameState';
 import Starfield from '../components/Starfield';
 import RollButton from '../components/RollButton';
@@ -10,6 +10,7 @@ import PlanetHistory from '../components/PlanetHistory';
 import CollapsibleStats from '../components/CollapsibleStats';
 import SaveToast from '../components/SaveToast';
 import EquippedPlanetDisplay from '../components/EquippedPlanetDisplay';
+import SettingsModal, { GameSettings } from '../components/SettingsModal';
 
 const Index = () => {
   const {
@@ -26,6 +27,23 @@ const Index = () => {
 
   const [showSaveToast, setShowSaveToast] = useState(false);
   const [saveMessage, setSaveMessage] = useState('');
+  const [showSettingsModal, setShowSettingsModal] = useState(false);
+  const [gameSettings, setGameSettings] = useState<GameSettings>({
+    soundEnabled: true,
+    soundVolume: 50,
+    visualEffects: true,
+    particleEffects: true,
+    animationSpeed: 100,
+    showUI: true,
+    autoSave: true,
+    showTooltips: true,
+    reducedMotion: false,
+    highContrast: false,
+    theme: 'dark',
+    showRollHistory: true,
+    showChanceMeter: true,
+    compactMode: false,
+  });
 
   const hasEchoAnalyzer = gameState.upgrades.find(u => u.id === 'echo-analyzer')?.owned || false;
   const hasChronoCapsule = gameState.upgrades.find(u => u.id === 'chrono-capsule')?.owned || false;
@@ -70,33 +88,46 @@ const Index = () => {
         {/* Header */}
         <header className="flex items-center justify-between p-6">
           <div className="flex items-center space-x-3">
-            <Sparkles className="w-8 h-8 text-accent" />
+            <img src="/lovable-uploads/4335c46e-78c3-4f52-8a32-18443ec8b21d.png" className="w-8 h-8" alt="Planetfall Logo" />
             <h1 className="text-2xl font-bold text-foreground">Planetfall: Nebula Dice</h1>
           </div>
-          <button
-            onClick={toggleUpgradePanel}
-            className="glass-button px-4 py-2 flex items-center space-x-2 hover:bg-primary/20"
-          >
-            <Settings className="w-4 h-4" />
-            <span>Upgrades</span>
-          </button>
+          <div className="flex items-center space-x-2">
+            <button
+              onClick={() => setShowSettingsModal(true)}
+              className="glass-button px-4 py-2 flex items-center space-x-2 hover:bg-accent/20"
+            >
+              <Settings className="w-4 h-4" />
+              <span>Settings</span>
+            </button>
+            <button
+              onClick={toggleUpgradePanel}
+              className="glass-button px-4 py-2 flex items-center space-x-2 hover:bg-primary/20"
+            >
+              <Settings className="w-4 h-4" />
+              <span>Upgrades</span>
+            </button>
+          </div>
         </header>
 
 
         {/* Main Game Area */}
         <div className="flex-1 flex flex-col lg:flex-row gap-6 p-6">
           {/* Left Panel - Chance Meter */}
-          <div className="lg:w-80 space-y-6">
-            <ChanceMeter probabilities={gameState.modifiedProbabilities} />
-            
-            {/* Collapsible Stats */}
-            <CollapsibleStats
-              rollCount={gameState.rollCount}
-              planetCount={gameState.planets.length}
-              dailyRerolls={gameState.dailyRerolls}
-              hasChronoCapsule={hasChronoCapsule}
-            />
-          </div>
+          {gameSettings.showUI && (
+            <div className="lg:w-80 space-y-6">
+              {gameSettings.showChanceMeter && (
+                <ChanceMeter probabilities={gameState.modifiedProbabilities} />
+              )}
+              
+              {/* Collapsible Stats */}
+              <CollapsibleStats
+                rollCount={gameState.rollCount}
+                planetCount={gameState.planets.length}
+                dailyRerolls={gameState.dailyRerolls}
+                hasChronoCapsule={hasChronoCapsule}
+              />
+            </div>
+          )}
 
           {/* Center - Roll Button */}
           <div className="flex-1 flex items-center justify-center">
@@ -154,12 +185,15 @@ const Index = () => {
           </div>
 
           {/* Right Panel - Planet History */}
-          <div className="lg:w-80">
-            <PlanetHistory
-              planets={gameState.planets}
-              onPlanetClick={showPlanetDetails}
-            />
-          </div>
+          {gameSettings.showUI && gameSettings.showRollHistory && (
+            <div className="lg:w-80">
+              <PlanetHistory
+                planets={gameState.planets}
+                onPlanetClick={showPlanetDetails}
+                bestPlanet={bestPlanet}
+              />
+            </div>
+          )}
         </div>
 
         {/* Footer */}
@@ -189,6 +223,14 @@ const Index = () => {
         show={showSaveToast}
         message={saveMessage}
         onHide={() => setShowSaveToast(false)}
+      />
+
+      {/* Settings Modal */}
+      <SettingsModal
+        isOpen={showSettingsModal}
+        onClose={() => setShowSettingsModal(false)}
+        settings={gameSettings}
+        onSettingsChange={setGameSettings}
       />
     </div>
   );
