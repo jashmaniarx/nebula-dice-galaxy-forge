@@ -672,7 +672,7 @@ export const useGameState = () => {
       setAutoRollEnabled(true);
       const interval = setInterval(() => {
         rollPlanet();
-      }, 3000);
+      }, 1500);
       setAutoRollInterval(interval);
     }
   }, [autoRollEnabled, autoRollInterval, rollPlanet]);

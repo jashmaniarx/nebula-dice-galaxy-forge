@@ -9,6 +9,7 @@ import UpgradePanel from '../components/UpgradePanel';
 import PlanetHistory from '../components/PlanetHistory';
 import CollapsibleStats from '../components/CollapsibleStats';
 import SaveToast from '../components/SaveToast';
+import EquippedPlanetDisplay from '../components/EquippedPlanetDisplay';
 
 const Index = () => {
   const {
@@ -29,7 +30,7 @@ const Index = () => {
   const hasEchoAnalyzer = gameState.upgrades.find(u => u.id === 'echo-analyzer')?.owned || false;
   const hasChronoCapsule = gameState.upgrades.find(u => u.id === 'chrono-capsule')?.owned || false;
   const hasAutoDiscovery = gameState.upgrades.find(u => u.id === 'auto-discovery')?.owned || false;
-  const canAutoRoll = gameState.rollCount >= 100 && hasAutoDiscovery;
+  const canAutoRoll = gameState.rollCount >= 100;
 
   // Get the best planet (highest rarity)
   const bestPlanet = gameState.planets.length > 0 ? gameState.planets.reduce((best, planet) => {
@@ -81,6 +82,13 @@ const Index = () => {
           </button>
         </header>
 
+        {/* Equipped Planet Display - Top Position */}
+        {bestPlanet && (
+          <div className="flex justify-center pt-4 pb-2">
+            <EquippedPlanetDisplay planet={bestPlanet} />
+          </div>
+        )}
+
         {/* Main Game Area */}
         <div className="flex-1 flex flex-col lg:flex-row gap-6 p-6">
           {/* Left Panel - Chance Meter */}
@@ -109,14 +117,14 @@ const Index = () => {
                 </p>
               </div>
               
-              <RollButton onRoll={handleRoll} equippedPlanet={bestPlanet} />
+              <RollButton onRoll={handleRoll} />
               
               {/* Auto-roll Toggle */}
               {canAutoRoll && (
                 <div className="glass-panel p-4 mt-4">
                   <h3 className="text-sm font-semibold mb-2 text-accent">Auto-Discovery Available</h3>
                   <p className="text-xs text-muted-foreground mb-3">
-                    {autoRollEnabled ? 'Rolling automatically every 3 seconds' : 'Automatically roll every 3 seconds'}
+                    {autoRollEnabled ? 'Rolling automatically every 1.5 seconds' : 'Automatically roll every 1.5 seconds'}
                   </p>
                   <button
                     className={`glass-button px-4 py-2 text-sm transition-all ${

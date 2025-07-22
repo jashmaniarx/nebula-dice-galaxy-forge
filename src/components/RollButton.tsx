@@ -1,18 +1,13 @@
 import { Sparkles } from 'lucide-react';
-import { Planet } from '../types/game';
-import EquippedPlanetDisplay from './EquippedPlanetDisplay';
 
 interface RollButtonProps {
   onRoll: () => void;
   disabled?: boolean;
-  equippedPlanet?: Planet | null;
 }
 
-const RollButton = ({ onRoll, disabled = false, equippedPlanet }: RollButtonProps) => {
+const RollButton = ({ onRoll, disabled = false }: RollButtonProps) => {
   return (
     <div className="relative flex items-center justify-center">
-      {/* Equipped Planet Display */}
-      <EquippedPlanetDisplay planet={equippedPlanet} />
       
       {/* Orbit Ring */}
       <div className="absolute w-32 h-32 rounded-full border border-primary/30 orbit-ring">
